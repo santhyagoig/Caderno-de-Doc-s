@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caderno de Doces — mockup</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#B23A48">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Doces">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #FBF3E7;
+    --paper-line: #e7d9c2;
+    --ink: #2E2419;
+    --ink-soft: #7a6a58;
+    --jam: #B23A48;
+    --jam-dark: #8C2C38;
+    --jam-tint: #f3dde0;
+    --pistachio: #6f8a63;
+    --pistachio-tint: #e3ead9;
+    --caramel: #d98f3e;
+    --caramel-tint: #f7e6cd;
+    --shadow: 0 20px 45px rgba(46, 36, 25, 0.28);
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0; height:100%;
+    background: #d9cdb9;
+    background-image: radial-gradient(circle at 20% 10%, #e6dcc9, #cdc0a9 70%);
+    font-family:'Inter', sans-serif;
+    color: var(--ink);
+    display:flex; align-items:flex-start; justify-content:center;
+    min-height:100vh;
+    padding: 28px 12px;
+  }
+  .device{
+    width: 390px;
+    max-width: 100%;
+    background: var(--paper);
+    border-radius: 34px;
+    box-shadow: var(--shadow);
+    border: 6px solid #241d15;
+    overflow: hidden;
+    position: relative;
+    min-height: 760px;
+    display:flex;
+    flex-direction:column;
+  }
+  .device::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(
+      to bottom, transparent, transparent 27px, var(--paper-line) 28px
+    );
+    opacity:.45;
+    pointer-events:none;
+    z-index:0;
+  }
+  header{
+    background: linear-gradient(135deg, var(--jam), var(--jam-dark));
+    color: var(--paper);
+    padding: 22px 20px 16px;
+    position: relative;
+    z-index: 1;
+  }
+  header .top-row{ display:flex; justify-content:space-between; align-items:flex-start; }
+  header h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: 1.55rem;
+    margin:0;
+    letter-spacing: .2px;
+  }
+  header .date{
+    text-align:right;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    opacity: .85;
+    line-height: 1.5;
+  }
+  header .sub{
+    margin-top:6px;
+    font-size: .8rem;
+    opacity: .85;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    margin: 16px 20px 0;
+    background: rgba(255,255,255,.16);
+    padding: 4px;
+    border-radius: 999px;
+    position: relative;
+    z-index:1;
+  }
+  .tabs button{
+    flex:1;
+    border:none;
+    background:transparent;
+    color: var(--paper);
+    font-family:'Inter';
+    font-weight:600;
+    font-size: .74rem;
+    padding: 8px 0;
+    border-radius: 999px;
+    cursor:pointer;
+    opacity:.75;
+    transition: .18s ease;
+  }
+  .tabs button.active{
+    background: var(--paper);
+    color: var(--jam-dark);
+    opacity:1;
+  }
+  main{
+    flex:1;
+    overflow-y:auto;
+    padding: 18px 18px 100px;
+    position: relative;
+    z-index: 1;
+  }
+  .view{ display:none; }
+  .view.active{ display:block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .section-label{
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin: 4px 0 10px;
+  }
+
+  .doce-card{
+    background: #fff;
+    border: 1.5px dashed #d9c7ab;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    position: relative;
+    box-shadow: 0 2px 0 rgba(46,36,25,.04);
+  }
+  .doce-card .row-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+  }
+  .doce-card h3{
+    font-family:'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight:600;
+    margin:0;
+  }
+  .doce-card .del{
+    background:none; border:none; color:#b7a690; font-size:1.05rem;
+    cursor:pointer; line-height:1; padding: 2px 4px;
+  }
+  .doce-card .del:hover{ color: var(--jam); }
+  .stat-row{
+    display:flex; gap: 16px; margin-top: 8px; flex-wrap:wrap;
+  }
+  .stat{
+    font-size:.72rem; color: var(--ink-soft);
+  }
+  .stat b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: .92rem;
+    color: var(--ink);
+    font-weight:600;
+  }
+  .subtotal-pill{
+    margin-top:10px;
+    display:inline-flex;
+    align-items:baseline;
+    gap:6px;
+    background: var(--pistachio-tint);
+    color: #3d5233;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:.85rem;
+  }
+  .subtotal-pill span{ font-family:'Inter'; font-weight:600; font-size:.65rem; text-transform:uppercase; letter-spacing:.05em; opacity:.75; }
+
+  .empty-state{
+    text-align:center;
+    padding: 30px 10px;
+    color: var(--ink-soft);
+    font-size:.88rem;
+  }
+
+  .add-btn{
+    width:100%;
+    background: var(--jam);
+    color: var(--paper);
+    border:none;
+    padding: 13px;
+    border-radius: 12px;
+    font-family:'Inter'; font-weight:700; font-size:.92rem;
+    letter-spacing:.02em;
+    cursor:pointer;
+    margin-top: 6px;
+    transition: transform .12s ease, background .2s ease;
+    box-shadow: 0 6px 14px rgba(178,58,72,.28);
+  }
+  .add-btn:active{ transform: scale(.97); }
+
+  /* formulário inline de adicionar doce (aba Hoje) — sem modal, sem overlay */
+  .quick-add{
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height .28s ease, opacity .2s ease, margin .28s ease;
+    margin-top: 0;
+  }
+  .quick-add.open{
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+  .quick-add-actions{
+    display:flex; gap:10px; margin-top: 6px;
+  }
+  .quick-add-actions button{
+    flex:1; padding: 12px; border-radius: 12px; border:none;
+    font-family:'Inter'; font-weight:700; font-size:.88rem; cursor:pointer;
+  }
+
+  .summary-box{
+    margin-top: 26px;
+    background: #fffaf2;
+    border: 1px solid var(--paper-line);
+    border-radius: 18px;
+    padding: 18px 16px 14px;
+    text-align:center;
+    position: relative;
+  }
+  .summary-box .section-label{ text-align:left; }
+  .stamp{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width: 148px; height: 148px;
+    border-radius: 50%;
+    border: 3px solid var(--jam);
+    outline: 1px solid var(--jam);
+    outline-offset: 4px;
+    color: var(--jam);
+    transform: rotate(-6deg);
+    margin: 6px auto 10px;
+    mix-blend-mode: multiply;
+    opacity: .92;
+    animation: stampIn .35s ease-out;
+  }
+  @keyframes stampIn{ from{ transform: rotate(-6deg) scale(1.3); opacity:0; } to { transform: rotate(-6deg) scale(1); opacity:.92; } }
+  .stamp .label{ font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; }
+  .stamp .value{ font-family:'IBM Plex Mono', monospace; font-size:1.28rem; font-weight:600; margin-top:2px; }
+  .stamp .label2{ font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; opacity:.8; margin-top:2px; }
+
+  .totals-row{
+    display:flex; justify-content:center; gap: 26px; margin-top: 4px;
+  }
+  .totals-row div{ text-align:center; }
+  .totals-row b{ display:block; font-family:'IBM Plex Mono', monospace; font-size:1rem; }
+  .totals-row span{ font-size:.68rem; color: var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; }
+
+  .note-block{ margin-top: 22px; }
+  textarea{
+    width:100%;
+    min-height: 90px;
+    border: 1px solid var(--paper-line);
+    background: repeating-linear-gradient(to bottom, #fffaf2, #fffaf2 26px, #f1e6d3 27px);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family:'Inter';
+    font-size: .85rem;
+    line-height: 27px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  textarea:focus{ outline: 2px solid var(--caramel); outline-offset: 1px; }
+  textarea::placeholder{ color: #b7a690; }
+
+  /* gráfico de evolução semanal */
+  .week-chart-block{ margin-top: 22px; }
+  .week-chart-wrap{
+    background:#fffaf2;
+    border:1px solid var(--paper-line);
+    border-radius:14px;
+    padding: 14px 10px 8px;
+  }
+  .week-chart-wrap svg{ width:100%; height:auto; display:block; overflow:visible; }
+  .week-chart-point{ cursor:pointer; transition: r .12s ease; }
+  .week-chart-point:hover{ r: 5.5; }
+  .week-chart-daylabel{ font-family:'Inter', sans-serif; font-size:8.5px; fill: var(--ink-soft); }
+  .week-chart-daylabel.today{ fill: var(--jam-dark); font-weight:700; }
+  .week-chart-valuelabel{ font-family:'IBM Plex Mono', monospace; font-size:7.5px; fill: var(--jam-dark); font-weight:600; }
+  .week-chart-empty-note{
+    text-align:center; color: var(--ink-soft); font-size:.72rem;
+    margin-top: 6px;
+  }
+
+  /* totais discretos: semana e mês, logo abaixo do gráfico */
+  .totals-discreet{
+    display:flex;
+    justify-content:center;
+    gap: 28px;
+    margin-top: 10px;
+  }
+  .totals-discreet span{
+    text-align:center;
+    font-size:.64rem;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color: var(--ink-soft);
+  }
+  .totals-discreet b{
+    display:block;
+    margin-top:2px;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:.82rem;
+    letter-spacing:0;
+    text-transform:none;
+    color: var(--ink);
+  }
+
+  /* history */
+  .day-card{
+    background:#fff;
+    border-radius: 14px;
+    border: 1px solid var(--paper-line);
+    margin-bottom: 12px;
+    overflow:hidden;
+  }
+  .day-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 13px 14px;
+    cursor:pointer;
+  }
+  .day-head .d-left{ display:flex; flex-direction:column; }
+  .day-head .d-date{ font-family:'Fraunces', serif; font-weight:600; font-size:1rem; }
+  .day-head .d-sub{ font-size:.72rem; color:var(--ink-soft); margin-top:2px; }
+  .day-head .d-total{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    color: var(--jam-dark);
+    background: var(--jam-tint);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size:.82rem;
+  }
+  .day-body{
+    max-height:0;
+    overflow:hidden;
+    transition: max-height .3s ease;
+    border-top: 1px dashed var(--paper-line);
+  }
+  .day-card.open .day-body{ max-height: 320px; }
+  .day-body-inner{ padding: 12px 14px 14px; }
+  .day-entry{
+    display:flex; justify-content:space-between;
+    font-size:.8rem;
+    padding: 5px 0;
+    border-bottom: 1px dotted #ece0cb;
+  }
+  .day-entry:last-of-type{ border-bottom:none; }
+  .day-note{
+    margin-top:10px;
+    font-size:.78rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    background: var(--caramel-tint);
+    padding: 8px 10px;
+    border-radius: 8px;
+  }
+  .chev{ transition: transform .25s ease; color: var(--ink-soft); margin-left:8px; }
+  .day-card.open .chev{ transform: rotate(180deg); }
+  .day-head-right{ display:flex; align-items:center; }
+
+  /* bottom sheet */
+  .backdrop{
+    position:absolute; inset:0; background: rgba(46,36,25,.45);
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+    z-index: 5;
+  }
+  .backdrop.show{ opacity:1; pointer-events:auto; }
+  .sheet{
+    position:absolute; left:0; right:0; bottom:0;
+    background: var(--paper);
+    border-radius: 22px 22px 0 0;
+    padding: 20px 20px 0;
+    transform: translateY(105%);
+    transition: transform .32s cubic-bezier(.32,.72,.35,1);
+    z-index: 6;
+    box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+    max-height: 82vh;
+    max-height: min(82dvh, calc(100% - 32px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+  }
+  .sheet.show{ transform: translateY(0); }
+  .sheet h2{
+    font-family:'Fraunces', serif; font-size:1.15rem; margin: 0 0 14px;
+  }
+  .field{ margin-bottom: 12px; }
+  .field label{
+    display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+    color: var(--ink-soft); margin-bottom: 5px; font-weight:600;
+  }
+  .field input{
+    width:100%;
+    border: 1.5px solid var(--paper-line);
+    border-radius: 10px;
+    padding: 10px 11px;
+    font-family:'Inter'; font-size:.9rem;
+    background:#fff;
+    color: var(--ink);
+  }
+  .field input:focus{ outline: 2px solid var(--caramel); border-color: transparent; }
+  .field input[type="date"]{ font-family:'IBM Plex Mono', monospace; font-size:.85rem; }
+  .field-row{ display:flex; gap:10px; }
+  .field-row .field{ flex:1; }
+  .sheet-actions{
+    display:flex; gap:10px; margin-top: 10px;
+    position: sticky; bottom: 0;
+    background: var(--paper);
+    padding: 10px 0 20px;
+    border-top: 1px solid var(--paper-line);
+  }
+  .sheet-actions button{
+    flex:1; padding: 12px; border-radius: 12px; border:none;
+    font-family:'Inter'; font-weight:700; font-size:.88rem; cursor:pointer;
+  }
+  .btn-cancel{ background: #eee2cd; color: var(--ink-soft); }
+  .btn-save{ background: var(--jam); color: var(--paper); }
+  .error-msg{ color: var(--jam-dark); font-size:.76rem; margin-top:-6px; margin-bottom:10px; display:none; }
+  .error-msg.show{ display:block; }
+
+  /* tela de boas-vindas */
+  .welcome{
+    position:absolute; inset:0;
+    background: var(--paper);
+    z-index: 20;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding: 40px 30px;
+    text-align:center;
+    transition: opacity .4s ease, visibility .4s ease;
+  }
+  .welcome.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .welcome::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(
+      to bottom, transparent, transparent 27px, var(--paper-line) 28px
+    );
+    opacity:.45;
+    z-index:-1;
+  }
+  .welcome .stamp-mini{
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    border: 3px solid var(--jam);
+    outline: 1px solid var(--jam);
+    outline-offset: 3px;
+    color: var(--jam);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:700; font-size: 1.9rem;
+    transform: rotate(-6deg);
+    margin-bottom: 22px;
+    mix-blend-mode: multiply;
+  }
+  .welcome h2{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: 1.6rem;
+    margin: 0 0 8px;
+  }
+  .welcome p{
+    font-size: .88rem;
+    color: var(--ink-soft);
+    margin: 0 0 26px;
+    max-width: 260px;
+  }
+  .welcome .field{ width:100%; max-width: 280px; text-align:left; }
+  .welcome input{
+    width:100%;
+    border: 1.5px solid var(--paper-line);
+    border-radius: 10px;
+    padding: 12px 13px;
+    font-family:'Fraunces', serif; font-size:1.05rem;
+    background:#fff;
+    color: var(--ink);
+    text-align:center;
+  }
+  .welcome input:focus{ outline: 2px solid var(--caramel); border-color: transparent; }
+  .welcome .add-btn{ max-width: 280px; margin-top: 16px; }
+  .welcome .error-msg{ text-align:center; }
+
+  /* cofrinho */
+  .cofre-total{
+    background: #fffaf2;
+    border: 1px solid var(--paper-line);
+    border-radius: 18px;
+    padding: 18px 16px;
+    text-align:center;
+    margin-bottom: 18px;
+  }
+  .cofre-total .stamp{
+    width: 128px; height: 128px;
+    border-color: var(--pistachio);
+    color: #3d5233;
+    mix-blend-mode: normal;
+    background: rgba(124,148,115,.06);
+  }
+  .caixinha-card{
+    background: #fff;
+    border: 1.5px solid var(--paper-line);
+    border-radius: 14px;
+    padding: 14px 14px;
+    margin-bottom: 12px;
+    display:flex;
+    align-items:center;
+    gap: 12px;
+  }
+  .caixinha-icon{
+    width: 46px; height:46px;
+    border-radius: 12px;
+    background: var(--pistachio-tint);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.3rem;
+    flex-shrink:0;
+  }
+  .caixinha-info{ flex:1; min-width:0; }
+  .caixinha-info h3{
+    font-family:'Fraunces', serif; font-size:1rem; font-weight:600; margin:0 0 2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .caixinha-info .valor{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:1.05rem; color:#3d5233;
+  }
+  .caixinha-actions{ display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .btn-guardar{
+    background: var(--pistachio-tint);
+    color: #3d5233;
+    border:none; border-radius: 999px;
+    padding: 6px 12px;
+    font-family:'Inter'; font-weight:700; font-size:.72rem;
+    cursor:pointer;
+  }
+  .btn-guardar:active{ transform: scale(.96); }
+  .caixinha-del{
+    background:none; border:none; color:#b7a690; font-size:.95rem; cursor:pointer; padding:2px;
+  }
+  .caixinha-del:hover{ color: var(--jam); }
+
+  /* rodapé */
+  .app-footer{
+    text-align:center;
+    font-size:.6rem;
+    color: var(--ink-soft);
+    opacity:.55;
+    padding: 7px 10px 11px;
+    background: var(--paper);
+    position: relative;
+    z-index:1;
+    border-top: 1px solid var(--paper-line);
+    letter-spacing:.01em;
+  }
+
+  /* editor de dia (histórico) */
+  .day-edit-btn{
+    background:none; border:none; color: var(--ink-soft);
+    font-size:.85rem; cursor:pointer; padding: 2px 6px; margin-right:2px;
+  }
+  .day-edit-btn:hover{ color: var(--jam); }
+  .day-del-btn{
+    background:none; border:none; color: var(--ink-soft);
+    font-size:.8rem; cursor:pointer; padding: 2px 6px; margin-right:2px;
+    opacity:.75;
+  }
+  .day-del-btn:hover{ color: var(--jam-dark); opacity:1; }
+  .day-del-btn.confirm-del{
+    background: var(--jam);
+    color: #fff;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size:.68rem;
+    font-weight:700;
+    opacity:1;
+  }
+  .item-edit-row{
+    background: #fbf6ec;
+    border: 1px dashed var(--paper-line);
+    border-radius: 10px;
+    padding: 10px 10px 4px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .item-edit-row .item-remove{
+    position:absolute; top:6px; right:8px;
+    background:none; border:none; color:#b7a690; font-size:.9rem; cursor:pointer;
+  }
+  .item-edit-row .item-remove:hover{ color: var(--jam); }
+  .item-edit-row .field{ margin-bottom:8px; }
+  .item-edit-row .field-row{ gap:8px; }
+  .add-item-btn{
+    background: var(--caramel-tint);
+    color: #7a5220;
+    border:none; border-radius: 999px;
+    padding: 7px 14px;
+    font-family:'Inter'; font-weight:700; font-size:.75rem;
+    cursor:pointer;
+    margin-bottom: 14px;
+  }
+  .add-day-btn{
+    width:100%;
+    background: transparent;
+    border: 1.5px dashed #c9b491;
+    color: var(--ink-soft);
+    padding: 12px;
+    border-radius: 12px;
+    font-family:'Inter'; font-weight:600; font-size:.82rem;
+    cursor:pointer;
+    margin-top: 4px;
+  }
+  .add-day-btn:hover{ color: var(--jam); border-color: var(--jam); }
+</style>
+</head>
+<body>
+
+<div class="device">
+  <div class="welcome" id="welcome">
+    <div class="stamp-mini">✎</div>
+    <h2>Olá!</h2>
+    <p>Como você quer ser chamada por aqui?</p>
+    <div class="field">
+      <input type="text" id="f-apelido" placeholder="Seu nome ou apelido" maxlength="24">
+    </div>
+    <div class="error-msg" id="welcome-error">Digita um nome pra gente continuar.</div>
+    <button class="add-btn" id="start-btn">Começar</button>
+  </div>
+
+  <header>
+    <div class="top-row">
+      <h1>Caderno de Doces</h1>
+      <div class="date">Hoje<br><span id="today-date">22 ago</span></div>
+    </div>
+    <div class="sub" id="header-sub">O que foi feito, o que foi vendido.</div>
+    <div class="tabs">
+      <button class="active" data-tab="hoje">Hoje</button>
+      <button data-tab="historico">Histórico</button>
+      <button data-tab="cofre">Cofrinho</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- VIEW: HOJE -->
+    <section class="view active" id="view-hoje">
+      <div class="section-label">Doces de hoje</div>
+      <div id="doce-list"></div>
+      <div class="empty-state" id="empty-state" style="display:none;">
+        Nenhum doce ainda hoje.<br>Toque em "+ Adicionar doce" para começar.
+      </div>
+      <button class="add-btn" id="toggle-quick-add">+ Adicionar doce</button>
+
+      <div class="quick-add" id="quick-add-form">
+        <div class="field">
+          <label>Nome do doce</label>
+          <input type="text" id="f-nome" placeholder="Ex: Brigadeiro">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Preço (R$)</label>
+            <input type="number" id="f-preco" placeholder="1,50" step="0.01" min="0">
+          </div>
+          <div class="field">
+            <label>Produzidos</label>
+            <input type="number" id="f-produzidos" placeholder="40" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label>Vendidos</label>
+          <input type="number" id="f-vendidos" placeholder="32" min="0">
+        </div>
+        <div class="error-msg" id="form-error">Preencha nome, preço e as quantidades corretamente.</div>
+        <div class="quick-add-actions">
+          <button class="btn-cancel" id="cancel-quick-add" type="button">Cancelar</button>
+          <button class="btn-save" id="save-quick-add" type="button">Salvar doce</button>
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="section-label">Resumo do dia</div>
+        <div class="stamp" id="stamp">
+          <div class="label">Receita</div>
+          <div class="value" id="stamp-value">R$ 0,00</div>
+          <div class="label2">do dia</div>
+        </div>
+        <div class="totals-row">
+          <div><b id="total-produzido">0</b><span>Produzidos</span></div>
+          <div><b id="total-vendido">0</b><span>Vendidos</span></div>
+        </div>
+        <div class="note-block">
+          <div class="section-label">Anotação do dia</div>
+          <textarea id="note" placeholder="Como foi o dia? Clientes, sabores que saíram bem, o que ajustar amanhã..."></textarea>
+        </div>
+
+        <div class="week-chart-block">
+          <div class="section-label">Evolução da semana</div>
+          <div class="week-chart-wrap" id="week-chart-wrap"></div>
+          <div class="totals-discreet">
+            <span>Semana<b id="total-semana-discreet">R$ 0,00</b></span>
+            <span>Mês<b id="total-mes-discreet">R$ 0,00</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: HISTORICO -->
+    <section class="view" id="view-historico">
+      <div class="section-label">Dias anteriores</div>
+      <div id="history-list"></div>
+      <button class="add-day-btn" id="open-sheet-day-new">+ Lançar dia esquecido</button>
+    </section>
+    <!-- VIEW: COFRINHO -->
+    <section class="view" id="view-cofre">
+      <div class="cofre-total">
+        <div class="section-label" style="text-align:left">Total guardado</div>
+        <div class="stamp" id="cofre-stamp">
+          <div class="label">Guardado</div>
+          <div class="value" id="cofre-total-value">R$ 0,00</div>
+          <div class="label2">no total</div>
+        </div>
+      </div>
+      <div class="section-label">Suas caixinhas</div>
+      <div id="caixinha-list"></div>
+      <div class="empty-state" id="cofre-empty" style="display:none;">
+        Nenhuma caixinha ainda.<br>Crie uma pra começar a guardar.
+      </div>
+      <button class="add-btn" id="open-sheet-caixinha">+ Nova caixinha</button>
+    </section>
+  </main>
+
+  <footer class="app-footer">© Todos os direitos reservados — Santhyago e Aysha</footer>
+
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet2">
+    <h2 id="sheet2-title">Nova caixinha</h2>
+    <div class="field" id="field-nome-caixinha">
+      <label>Nome da caixinha</label>
+      <input type="text" id="c-nome" placeholder="Ex: Insumos, Viagem, Emergência">
+    </div>
+    <div class="field">
+      <label id="c-valor-label">Valor inicial (R$)</label>
+      <input type="number" id="c-valor" placeholder="0,00" step="0.01" min="0">
+    </div>
+    <div class="error-msg" id="form-error2">Preencha os campos corretamente.</div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="cancel-sheet2">Cancelar</button>
+      <button class="btn-save" id="save-sheet2">Salvar</button>
+    </div>
+  </div>
+
+  <div class="sheet sheet-day" id="sheet3">
+    <h2 id="sheet3-title">Editar dia</h2>
+    <div class="field">
+      <label>Data do dia</label>
+      <input type="date" id="d-data">
+    </div>
+    <div class="section-label">Doces do dia</div>
+    <div id="d-itens-list"></div>
+    <button class="add-item-btn" id="d-add-item">+ Adicionar doce ao dia</button>
+    <div class="field">
+      <label>Anotação do dia</label>
+      <textarea id="d-nota" style="min-height:60px; line-height:1.4;" placeholder="Opcional"></textarea>
+    </div>
+    <div class="error-msg" id="form-error3">Confira nome, preço e quantidades dos doces.</div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="cancel-sheet3">Cancelar</button>
+      <button class="btn-save" id="save-sheet3">Salvar dia</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------- estado ----------
+  let entries = [
+    { nome: "Brigadeiro", preco: 1.50, produzidos: 40, vendidos: 32 },
+    { nome: "Beijinho", preco: 1.50, produzidos: 30, vendidos: 24 },
+  ];
+
+  // ---------- utilidades ----------
+  const meses = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  const diasSemana = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+
+  function pad2(n){ return String(n).padStart(2, "0"); }
+  function paraISO(d){ return d.getFullYear() + "-" + pad2(d.getMonth()+1) + "-" + pad2(d.getDate()); }
+  function hojeISO(){ return paraISO(new Date()); }
+  function isoDiasAtras(n){
+    const d = new Date();
+    d.setDate(d.getDate() - n);
+    return paraISO(d);
+  }
+  function formatDataCurta(iso){
+    if(!iso) return "";
+    const [y, m, d] = iso.split("-").map(Number);
+    return d + " " + meses[m-1];
+  }
+  function nomeDiaSemana(iso){
+    if(!iso) return "";
+    const [y, m, d] = iso.split("-").map(Number);
+    return diasSemana[new Date(y, m-1, d).getDay()];
+  }
+  function ordenarHistorico(){
+    historico.sort((a, b) => b.data.localeCompare(a.data));
+  }
+
+  function brl(v){
+    return "R$ " + v.toFixed(2).replace(".", ",");
+  }
+
+  function calcSubtotal(e){ return e.preco * e.vendidos; }
+
+  let historico = [
+    {
+      data: isoDiasAtras(1),
+      nota: "Beijinho saiu mais rápido que o brigadeiro hoje. Fazer mais amanhã.",
+      itens: [
+        { nome: "Brigadeiro", produzidos: 35, vendidos: 35, preco: 1.5 },
+        { nome: "Beijinho", produzidos: 25, vendidos: 25, preco: 1.5 },
+        { nome: "Cajuzinho", produzidos: 20, vendidos: 14, preco: 1.7 },
+      ]
+    },
+    {
+      data: isoDiasAtras(2),
+      nota: "",
+      itens: [
+        { nome: "Brigadeiro", produzidos: 30, vendidos: 22, preco: 1.5 },
+        { nome: "Bicho de pé", produzidos: 20, vendidos: 18, preco: 1.4 },
+      ]
+    },
+    {
+      data: isoDiasAtras(3),
+      nota: "Cliente encomendou 50 brigadeiros pra sexta. Separar leite condensado extra.",
+      itens: [
+        { nome: "Brigadeiro", produzidos: 50, vendidos: 45, preco: 1.5 },
+      ]
+    },
+  ];
+
+  // ---------- armazenamento local ----------
+  const STORAGE_OK = (() => {
+    try{
+      const t = "__teste__";
+      localStorage.setItem(t, "1");
+      localStorage.removeItem(t);
+      return true;
+    }catch(e){ return false; }
+  })();
+
+  function salvar(){
+    if(!STORAGE_OK) return;
+    try{
+      localStorage.setItem("doces_entries", JSON.stringify(entries));
+      localStorage.setItem("doces_nota", document.getElementById("note") ? document.getElementById("note").value : "");
+      localStorage.setItem("doces_historico", JSON.stringify(historico));
+      localStorage.setItem("doces_caixinhas", JSON.stringify(caixinhas));
+      const apelido = document.getElementById("header-sub").dataset.apelido || "";
+      localStorage.setItem("doces_apelido", apelido);
+    }catch(e){ console.warn("Não foi possível salvar localmente:", e); }
+  }
+
+  function carregar(){
+    if(!STORAGE_OK) return;
+    try{
+      const e = localStorage.getItem("doces_entries");
+      if(e) entries = JSON.parse(e);
+      const h = localStorage.getItem("doces_historico");
+      if(h) historico = JSON.parse(h);
+      const c = localStorage.getItem("doces_caixinhas");
+      if(c) caixinhas = JSON.parse(c);
+    }catch(e){ console.warn("Não foi possível carregar dados salvos:", e); }
+  }
+
+  // ---------- gráfico: evolução da semana (Seg a Dom) ----------
+  const DIAS_SEMANA_CURTO = ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"];
+
+  function segundaDaSemana(iso){
+    const [y, m, d] = iso.split("-").map(Number);
+    const dt = new Date(y, m-1, d);
+    const diaSemana = dt.getDay(); // 0=Dom .. 6=Sáb
+    const diffSegunda = (diaSemana === 0) ? 6 : diaSemana - 1;
+    dt.setDate(dt.getDate() - diffSegunda);
+    return dt;
+  }
+
+  function receitaDoDia(iso, hojeIso){
+    if(iso === hojeIso){
+      return entries.reduce((s, e) => s + calcSubtotal(e), 0);
+    }
+    const dia = historico.find(h => h.data === iso);
+    if(!dia) return 0;
+    return dia.itens.reduce((s, it) => s + it.preco * it.vendidos, 0);
+  }
+
+  function coletarDadosSemana(){
+    const hojeIso = hojeISO();
+    const segunda = segundaDaSemana(hojeIso);
+    const valores = [];
+    const isos = [];
+    for(let i = 0; i < 7; i++){
+      const d = new Date(segunda);
+      d.setDate(segunda.getDate() + i);
+      const iso = paraISO(d);
+      isos.push(iso);
+      valores.push(receitaDoDia(iso, hojeIso));
+    }
+    return { valores, isos, hojeIso };
+  }
+
+  // soma tudo que caiu no mês corrente: dias do histórico + hoje (via entries, sem duplicar
+  // caso hoje também exista como registro no histórico)
+  function calcularTotalMes(){
+    const hojeIso = hojeISO();
+    const anoMesAtual = hojeIso.slice(0, 7); // "AAAA-MM"
+    let total = 0;
+    historico.forEach(day => {
+      if(day.data === hojeIso) return; // hoje é contado à parte, pelos dados atuais em `entries`
+      if(day.data.slice(0, 7) === anoMesAtual){
+        total += day.itens.reduce((s, it) => s + it.preco * it.vendidos, 0);
+      }
+    });
+    total += entries.reduce((s, e) => s + calcSubtotal(e), 0);
+    return total;
+  }
+
+  function renderWeekChart(){
+    const wrap = document.getElementById("week-chart-wrap");
+    if(!wrap) return; // segurança: só roda se o bloco existir na página
+
+    const { valores, isos, hojeIso } = coletarDadosSemana();
+    const totalSemana = valores.reduce((s, v) => s + v, 0);
+    const totalMes = calcularTotalMes();
+
+    const totalSemanaEl = document.getElementById("total-semana-discreet");
+    const totalMesEl = document.getElementById("total-mes-discreet");
+    if(totalSemanaEl) totalSemanaEl.textContent = brl(totalSemana);
+    if(totalMesEl) totalMesEl.textContent = brl(totalMes);
+
+    const W = 300, H = 108;
+    const padL = 16, padR = 16, padTop = 12, baseline = 76, labelY = 96;
+    const step = (W - padL - padR) / 6;
+    const maxVal = Math.max(...valores, 0.01);
+
+    const pontos = valores.map((v, i) => {
+      const x = padL + step * i;
+      const y = maxVal > 0 ? baseline - (v / maxVal) * (baseline - padTop) : baseline;
+      return { x, y, v, iso: isos[i] };
+    });
+
+    const linhaPts = pontos.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+    const areaPath = `M${pontos[0].x.toFixed(1)},${baseline} ` +
+      pontos.map(p => `L${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") +
+      ` L${pontos[6].x.toFixed(1)},${baseline} Z`;
+
+    const circulosSvg = pontos.map((p, i) => {
+      const isHoje = p.iso === hojeIso;
+      const r = isHoje ? 4.5 : 3;
+      const fill = isHoje ? "var(--jam)" : "#fff";
+      const stroke = "var(--jam)";
+      const valueLabel = p.v > 0
+        ? `<text class="week-chart-valuelabel" x="${p.x.toFixed(1)}" y="${(p.y - 7).toFixed(1)}" text-anchor="middle">${Math.round(p.v)}</text>`
+        : "";
+      return `
+        <circle class="week-chart-point" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1.8">
+          <title>${DIAS_SEMANA_CURTO[i]} · ${brl(p.v)}</title>
+        </circle>
+        ${valueLabel}
+        <text class="week-chart-daylabel${isHoje ? " today" : ""}" x="${p.x.toFixed(1)}" y="${labelY}" text-anchor="middle">${DIAS_SEMANA_CURTO[i]}</text>
+      `;
+    }).join("");
+
+    wrap.innerHTML = `
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+        <line x1="${padL}" y1="${baseline}" x2="${W - padR}" y2="${baseline}" stroke="var(--paper-line)" stroke-width="1" />
+        <path d="${areaPath}" fill="var(--jam-tint)" opacity="0.55" stroke="none" />
+        <polyline points="${linhaPts}" fill="none" stroke="var(--jam)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+        ${circulosSvg}
+      </svg>
+      ${totalSemana === 0 ? '<div class="week-chart-empty-note">Ainda sem vendas registradas essa semana.</div>' : ""}
+    `;
+  }
+
+  // ---------- render: hoje ----------
+  function renderHoje(){
+    const list = document.getElementById("doce-list");
+    const empty = document.getElementById("empty-state");
+    list.innerHTML = "";
+
+    if(entries.length === 0){
+      empty.style.display = "block";
+    } else {
+      empty.style.display = "none";
+      entries.forEach((e, i) => {
+        const card = document.createElement("div");
+        card.className = "doce-card";
+        card.innerHTML = `
+          <div class="row-top">
+            <h3>${e.nome}</h3>
+            <button class="del" data-i="${i}" aria-label="Remover ${e.nome}">✕</button>
+          </div>
+          <div class="stat-row">
+            <div class="stat">Preço<br><b>${brl(e.preco)}</b></div>
+            <div class="stat">Produzidos<br><b>${e.produzidos}</b></div>
+            <div class="stat">Vendidos<br><b>${e.vendidos}</b></div>
+          </div>
+          <div class="subtotal-pill"><span>Subtotal</span> ${brl(calcSubtotal(e))}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll(".del").forEach(btn=>{
+      btn.onclick = () => {
+        entries.splice(Number(btn.dataset.i), 1);
+        renderHoje();
+        salvar();
+      };
+    });
+
+    const totalProduzido = entries.reduce((s,e)=>s+Number(e.produzidos),0);
+    const totalVendido = entries.reduce((s,e)=>s+Number(e.vendidos),0);
+    const receita = entries.reduce((s,e)=>s+calcSubtotal(e),0);
+
+    document.getElementById("total-produzido").textContent = totalProduzido;
+    document.getElementById("total-vendido").textContent = totalVendido;
+    document.getElementById("stamp-value").textContent = brl(receita);
+
+    renderWeekChart();
+  }
+
+  // ---------- render: histórico ----------
+  function renderHistorico(){
+    const list = document.getElementById("history-list");
+    list.innerHTML = "";
+    historico.forEach((day, i) => {
+      const totalVendido = day.itens.reduce((s,e)=>s+e.vendidos,0);
+      const totalProduzido = day.itens.reduce((s,e)=>s+e.produzidos,0);
+      const receita = day.itens.reduce((s,e)=>s+e.preco*e.vendidos,0);
+
+      const card = document.createElement("div");
+      card.className = "day-card";
+      card.innerHTML = `
+        <div class="day-head">
+          <div class="d-left">
+            <div class="d-date">${formatDataCurta(day.data)} <span style="font-weight:400;font-size:.75rem;color:var(--ink-soft)">· ${nomeDiaSemana(day.data)}</span></div>
+            <div class="d-sub">${totalProduzido} produzidos · ${totalVendido} vendidos</div>
+          </div>
+          <div class="day-head-right">
+            <div class="d-total">${brl(receita)}</div>
+            <button class="day-edit-btn" data-i="${i}" aria-label="Editar ${day.data}">✎</button>
+            <button class="day-del-btn" data-i="${i}" aria-label="Excluir ${day.data}">🗑</button>
+            <span class="chev">▾</span>
+          </div>
+        </div>
+        <div class="day-body">
+          <div class="day-body-inner">
+            ${day.itens.map(it => `
+              <div class="day-entry">
+                <span>${it.nome}</span>
+                <span>${it.vendidos}/${it.produzidos} · ${brl(it.preco*it.vendidos)}</span>
+              </div>
+            `).join("")}
+            ${day.nota ? `<div class="day-note">"${day.nota}"</div>` : ""}
+          </div>
+        </div>
+      `;
+      card.querySelector(".day-head").onclick = (e) => {
+        if(e.target.closest(".day-edit-btn") || e.target.closest(".day-del-btn")) return;
+        card.classList.toggle("open");
+      };
+      card.querySelector(".day-edit-btn").onclick = (e) => {
+        e.stopPropagation();
+        openDaySheet(i);
+      };
+      const delBtn = card.querySelector(".day-del-btn");
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        if(delBtn.dataset.confirm === "1"){
+          historico.splice(i, 1);
+          renderHistorico();
+          salvar();
+          return;
+        }
+        delBtn.dataset.confirm = "1";
+        delBtn.textContent = "Confirmar?";
+        delBtn.classList.add("confirm-del");
+        delBtn.setAttribute("aria-label", `Confirmar exclusão de ${formatDataCurta(day.data)}`);
+        clearTimeout(delBtn._confirmTimeout);
+        delBtn._confirmTimeout = setTimeout(() => {
+          delBtn.dataset.confirm = "0";
+          delBtn.textContent = "🗑";
+          delBtn.classList.remove("confirm-del");
+          delBtn.setAttribute("aria-label", `Excluir ${day.data}`);
+        }, 3000);
+      };
+      list.appendChild(card);
+    });
+
+    renderWeekChart();
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".tabs button").forEach(btn=>{
+    btn.onclick = () => {
+      document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+      document.getElementById("view-" + btn.dataset.tab).classList.add("active");
+    };
+  });
+
+  // ---------- formulário inline: adicionar doce (aba Hoje) ----------
+  const backdrop = document.getElementById("backdrop");
+  const quickAddForm = document.getElementById("quick-add-form");
+  const quickAddToggleBtn = document.getElementById("toggle-quick-add");
+
+  function openQuickAdd(){
+    quickAddForm.classList.add("open");
+    document.getElementById("form-error").classList.remove("show");
+    document.getElementById("f-nome").focus();
+    quickAddToggleBtn.textContent = "− Fechar";
+  }
+  function closeQuickAdd(){
+    quickAddForm.classList.remove("open");
+    document.getElementById("form-error").classList.remove("show");
+    ["f-nome","f-preco","f-produzidos","f-vendidos"].forEach(id=>document.getElementById(id).value = "");
+    quickAddToggleBtn.textContent = "+ Adicionar doce";
+  }
+
+  quickAddToggleBtn.onclick = () => {
+    if(quickAddForm.classList.contains("open")) closeQuickAdd();
+    else openQuickAdd();
+  };
+  document.getElementById("cancel-quick-add").onclick = closeQuickAdd;
+
+  document.getElementById("save-quick-add").onclick = () => {
+    const nome = document.getElementById("f-nome").value.trim();
+    const preco = parseFloat(document.getElementById("f-preco").value);
+    const produzidos = parseInt(document.getElementById("f-produzidos").value);
+    const vendidos = parseInt(document.getElementById("f-vendidos").value);
+    const err = document.getElementById("form-error");
+
+    if(!nome || isNaN(preco) || preco < 0 || isNaN(produzidos) || produzidos < 0 || isNaN(vendidos) || vendidos < 0 || vendidos > produzidos){
+      err.textContent = vendidos > produzidos && !isNaN(vendidos) && !isNaN(produzidos)
+        ? "Vendidos não pode ser maior que produzidos."
+        : "Preencha nome, preço e as quantidades corretamente.";
+      err.classList.add("show");
+      return;
+    }
+
+    entries.push({ nome, preco, produzidos, vendidos });
+    renderHoje();
+    salvar();
+    ["f-nome","f-preco","f-produzidos","f-vendidos"].forEach(id=>document.getElementById(id).value = "");
+    err.classList.remove("show");
+    document.getElementById("f-nome").focus();
+  };
+
+  // ---------- boas-vindas ----------
+  const welcome = document.getElementById("welcome");
+  const apelidoInput = document.getElementById("f-apelido");
+
+  function startApp(){
+    const nome = apelidoInput.value.trim();
+    const err = document.getElementById("welcome-error");
+    if(!nome){
+      err.classList.add("show");
+      apelidoInput.focus();
+      return;
+    }
+    document.getElementById("header-sub").textContent = "Oi, " + nome + "! O que foi feito, o que foi vendido.";
+    document.getElementById("header-sub").dataset.apelido = nome;
+    welcome.classList.add("hide");
+    salvar();
+  }
+
+  document.getElementById("start-btn").onclick = startApp;
+  apelidoInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") startApp();
+  });
+  apelidoInput.addEventListener("input", () => {
+    document.getElementById("welcome-error").classList.remove("show");
+  });
+
+  // ---------- estado: cofrinho ----------
+  let caixinhas = [
+    { nome: "Insumos", valor: 150 },
+    { nome: "Reserva", valor: 80 },
+  ];
+  let caixinhaEditando = null; // null = criar nova; número = índice em edição/guardando
+  let caixinhaModo = "nova"; // "nova" | "guardar" | "editar"
+
+  function renderCofrinho(){
+    const list = document.getElementById("caixinha-list");
+    const empty = document.getElementById("cofre-empty");
+    list.innerHTML = "";
+
+    if(caixinhas.length === 0){
+      empty.style.display = "block";
+    } else {
+      empty.style.display = "none";
+      caixinhas.forEach((c, i) => {
+        const card = document.createElement("div");
+        card.className = "caixinha-card";
+        card.innerHTML = `
+          <div class="caixinha-icon">🐷</div>
+          <div class="caixinha-info">
+            <h3>${c.nome}</h3>
+            <div class="valor">${brl(c.valor)}</div>
+          </div>
+          <div class="caixinha-actions">
+            <button class="caixinha-del" data-i="${i}" aria-label="Remover ${c.nome}">✕</button>
+            <div class="caixinha-actions-row">
+              <button class="caixinha-edit" data-i="${i}" aria-label="Editar ${c.nome}">✎</button>
+              <button class="btn-guardar" data-i="${i}">+ Guardar</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll(".caixinha-del").forEach(btn=>{
+      btn.onclick = () => { caixinhas.splice(Number(btn.dataset.i),1); renderCofrinho(); salvar(); };
+    });
+    document.querySelectorAll(".btn-guardar").forEach(btn=>{
+      btn.onclick = () => openSheet2(Number(btn.dataset.i), "guardar");
+    });
+    document.querySelectorAll(".caixinha-edit").forEach(btn=>{
+      btn.onclick = () => openSheet2(Number(btn.dataset.i), "editar");
+    });
+
+    const total = caixinhas.reduce((s,c)=>s+Number(c.valor),0);
+    document.getElementById("cofre-total-value").textContent = brl(total);
+  }
+
+  // ---------- sheet2: nova caixinha / guardar valor ----------
+  const sheet2 = document.getElementById("sheet2");
+
+  function openSheet2(index, modo){
+    closeSheet3();
+    caixinhaEditando = (index === undefined) ? null : index;
+    caixinhaModo = (caixinhaEditando === null) ? "nova" : (modo || "guardar");
+    const title = document.getElementById("sheet2-title");
+    const nomeField = document.getElementById("field-nome-caixinha");
+    const valorLabel = document.getElementById("c-valor-label");
+    document.getElementById("form-error2").classList.remove("show");
+    document.getElementById("c-valor").value = "";
+    document.getElementById("c-nome").value = "";
+
+    if(caixinhaModo === "nova"){
+      title.textContent = "Nova caixinha";
+      nomeField.style.display = "block";
+      valorLabel.textContent = "Valor inicial (R$)";
+    } else if(caixinhaModo === "editar"){
+      const c = caixinhas[caixinhaEditando];
+      title.textContent = "Editar \"" + c.nome + "\"";
+      nomeField.style.display = "block";
+      document.getElementById("c-nome").value = c.nome;
+      document.getElementById("c-valor").value = c.valor;
+      valorLabel.textContent = "Valor da caixinha (R$)";
+    } else {
+      title.textContent = "Guardar em \"" + caixinhas[caixinhaEditando].nome + "\"";
+      nomeField.style.display = "none";
+      valorLabel.textContent = "Valor a guardar (R$)";
+    }
+    sheet2.classList.add("show");
+    backdrop.classList.add("show");
+  }
+  function closeSheet2(){
+    sheet2.classList.remove("show");
+    backdrop.classList.remove("show");
+  }
+
+  document.getElementById("open-sheet-caixinha").onclick = () => openSheet2();
+  document.getElementById("cancel-sheet2").onclick = closeSheet2;
+
+  document.getElementById("save-sheet2").onclick = () => {
+    const valor = parseFloat(document.getElementById("c-valor").value) || 0;
+    const err = document.getElementById("form-error2");
+
+    if(caixinhaModo === "nova"){
+      const nome = document.getElementById("c-nome").value.trim();
+      if(!nome){
+        err.textContent = "Dá um nome pra caixinha.";
+        err.classList.add("show");
+        return;
+      }
+      caixinhas.push({ nome, valor: valor < 0 ? 0 : valor });
+    } else if(caixinhaModo === "editar"){
+      const nome = document.getElementById("c-nome").value.trim();
+      if(!nome){
+        err.textContent = "Dá um nome pra caixinha.";
+        err.classList.add("show");
+        return;
+      }
+      if(valor < 0){
+        err.textContent = "O valor não pode ser negativo.";
+        err.classList.add("show");
+        return;
+      }
+      caixinhas[caixinhaEditando].nome = nome;
+      caixinhas[caixinhaEditando].valor = valor;
+    } else {
+      if(valor <= 0){
+        err.textContent = "Digita um valor maior que zero.";
+        err.classList.add("show");
+        return;
+      }
+      caixinhas[caixinhaEditando].valor += valor;
+    }
+    renderCofrinho();
+    closeSheet2();
+    salvar();
+  };
+
+  // backdrop fecha o que estiver aberto (só existem sheet2 e sheet3 como modais reais agora)
+  backdrop.onclick = () => { closeSheet2(); closeSheet3(); };
+
+  // ---------- sheet3: editar / lançar dia no histórico ----------
+  const sheet3 = document.getElementById("sheet3");
+  let editingDayIndex = null; // null = novo dia; número = editando historico[i]
+  let editingItens = [];
+
+  function renderEditingItens(){
+    const wrap = document.getElementById("d-itens-list");
+    wrap.innerHTML = "";
+    editingItens.forEach((it, i) => {
+      const row = document.createElement("div");
+      row.className = "item-edit-row";
+      row.innerHTML = `
+        <button class="item-remove" data-i="${i}" aria-label="Remover item">✕</button>
+        <div class="field">
+          <label>Nome do doce</label>
+          <input type="text" class="it-nome" data-i="${i}" value="${it.nome}" placeholder="Ex: Brigadeiro">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Preço (R$)</label>
+            <input type="number" class="it-preco" data-i="${i}" value="${it.preco}" step="0.01" min="0">
+          </div>
+          <div class="field">
+            <label>Produz.</label>
+            <input type="number" class="it-produzidos" data-i="${i}" value="${it.produzidos}" min="0">
+          </div>
+          <div class="field">
+            <label>Vend.</label>
+            <input type="number" class="it-vendidos" data-i="${i}" value="${it.vendidos}" min="0">
+          </div>
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+
+    wrap.querySelectorAll(".item-remove").forEach(btn=>{
+      btn.onclick = () => { editingItens.splice(Number(btn.dataset.i),1); renderEditingItens(); };
+    });
+    wrap.querySelectorAll(".it-nome").forEach(inp=>{
+      inp.oninput = () => editingItens[Number(inp.dataset.i)].nome = inp.value;
+    });
+    wrap.querySelectorAll(".it-preco").forEach(inp=>{
+      inp.oninput = () => editingItens[Number(inp.dataset.i)].preco = inp.value;
+    });
+    wrap.querySelectorAll(".it-produzidos").forEach(inp=>{
+      inp.oninput = () => editingItens[Number(inp.dataset.i)].produzidos = inp.value;
+    });
+    wrap.querySelectorAll(".it-vendidos").forEach(inp=>{
+      inp.oninput = () => editingItens[Number(inp.dataset.i)].vendidos = inp.value;
+    });
+  }
+
+  function openDaySheet(index){
+    closeSheet2();
+    editingDayIndex = (index === undefined) ? null : index;
+    document.getElementById("form-error3").classList.remove("show");
+
+    if(editingDayIndex === null){
+      document.getElementById("sheet3-title").textContent = "Lançar dia esquecido";
+      document.getElementById("d-data").value = hojeISO();
+      document.getElementById("d-nota").value = "";
+      editingItens = [{ nome:"", preco:"", produzidos:"", vendidos:"" }];
+    } else {
+      const day = historico[editingDayIndex];
+      document.getElementById("sheet3-title").textContent = "Editar " + formatDataCurta(day.data);
+      document.getElementById("d-data").value = day.data;
+      document.getElementById("d-nota").value = day.nota || "";
+      editingItens = day.itens.map(it => ({ ...it }));
+    }
+    renderEditingItens();
+    sheet3.classList.add("show");
+    backdrop.classList.add("show");
+  }
+  function closeSheet3(){
+    sheet3.classList.remove("show");
+    backdrop.classList.remove("show");
+  }
+
+  document.getElementById("open-sheet-day-new").onclick = () => openDaySheet();
+  document.getElementById("cancel-sheet3").onclick = closeSheet3;
+  document.getElementById("d-add-item").onclick = () => {
+    editingItens.push({ nome:"", preco:"", produzidos:"", vendidos:"" });
+    renderEditingItens();
+  };
+
+  document.getElementById("save-sheet3").onclick = () => {
+    const err = document.getElementById("form-error3");
+    const data = document.getElementById("d-data").value;
+
+    if(!data){
+      err.textContent = "Escolha a data do dia.";
+      err.classList.add("show");
+      return;
+    }
+
+    const itensValidos = editingItens.filter(it => it.nome && it.nome.trim() !== "");
+    if(itensValidos.length === 0){
+      err.textContent = "Adicione pelo menos um doce com nome.";
+      err.classList.add("show");
+      return;
+    }
+
+    const itensFinal = [];
+    for(const it of itensValidos){
+      const preco = parseFloat(it.preco);
+      const produzidos = parseInt(it.produzidos);
+      const vendidos = parseInt(it.vendidos);
+      if(isNaN(preco) || preco < 0 || isNaN(produzidos) || produzidos < 0 || isNaN(vendidos) || vendidos < 0 || vendidos > produzidos){
+        err.textContent = `Confira os números de "${it.nome}" (vendidos não pode passar de produzidos).`;
+        err.classList.add("show");
+        return;
+      }
+      itensFinal.push({ nome: it.nome.trim(), preco, produzidos, vendidos });
+    }
+
+    const novoDia = { data, nota: document.getElementById("d-nota").value.trim(), itens: itensFinal };
+
+    if(editingDayIndex === null){
+      historico.unshift(novoDia);
+    } else {
+      historico[editingDayIndex] = novoDia;
+    }
+    ordenarHistorico();
+    renderHistorico();
+    salvar();
+    closeSheet3();
+  };
+
+  // ---------- data de hoje ----------
+  document.getElementById("today-date").textContent = nomeDiaSemana(hojeISO()).slice(0,3) + ", " + formatDataCurta(hojeISO());
+
+  // ---------- init ----------
+  carregar();
+  ordenarHistorico();
+  renderHoje();
+  renderHistorico();
+  renderCofrinho();
+
+  const apelidoSalvo = STORAGE_OK ? localStorage.getItem("doces_apelido") : null;
+  if(apelidoSalvo){
+    document.getElementById("header-sub").textContent = "Oi, " + apelidoSalvo + "! O que foi feito, o que foi vendido.";
+    document.getElementById("header-sub").dataset.apelido = apelidoSalvo;
+    welcome.classList.add("hide");
+  }
+  const notaSalva = STORAGE_OK ? localStorage.getItem("doces_nota") : null;
+  if(notaSalva) document.getElementById("note").value = notaSalva;
+  document.getElementById("note").addEventListener("input", salvar);
+
+  // ---------- PWA: registrar service worker ----------
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(err => {
+        console.warn("Service worker não registrado (normal se o arquivo estiver aberto localmente):", err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
